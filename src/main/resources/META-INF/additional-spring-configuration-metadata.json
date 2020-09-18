@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "local.db.run",
+      "type": "java.lang.String",
+      "description": "What database server should spring use?"
+  }
+] }
