@@ -51,6 +51,16 @@ public class UserRoles extends Auditable implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if(obj == this)
+        {
+            return true;
+        }
+        if(!( obj instanceof UserRoles))
+        {
+            return false;
+        }
+        var that = (UserRoles) obj;
+        return (user == null ? 0 : user.getId()) == (that.user == null ? 0 : that.user.getId()) &&
+                (role == null ? 0 : role.getId()) == (that.role == null ? 0 : that.role.getId());
     }
 }

@@ -4,11 +4,11 @@ import com.lambdaschool.devdesk.queue.exceptions.ResourceNotFoundException;
 import com.lambdaschool.devdesk.queue.models.Answer;
 import com.lambdaschool.devdesk.queue.models.User;
 import com.lambdaschool.devdesk.queue.repositories.AnswersRepository;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -66,6 +66,17 @@ public class AnswerServicesImpl implements AnswerServices{
         if(answers.size() == 0)
         {
             throw new ResourceNotFoundException(String.format("Unable to find answers with issue id %d", id));
+        }
+        return answers;
+    }
+
+    @Override
+    public List<Answer> findAll() {
+        List<Answer> answers = new ArrayList<>();
+        answersRepository.findAll().iterator().forEachRemaining(answers::add);
+        if(answers.size() == 0)
+        {
+            throw new ResourceNotFoundException(String.format("No answers yet!"));
         }
         return answers;
     }

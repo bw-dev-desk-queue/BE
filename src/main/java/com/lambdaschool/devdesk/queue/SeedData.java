@@ -1,6 +1,6 @@
 package com.lambdaschool.devdesk.queue;
 
-import com.github.javafaker.*;
+import com.github.javafaker.Faker;
 import com.lambdaschool.devdesk.queue.models.*;
 import com.lambdaschool.devdesk.queue.services.AnswerServices;
 import com.lambdaschool.devdesk.queue.services.IssueServices;
@@ -52,6 +52,7 @@ public class SeedData implements CommandLineRunner {
         {
             User u = new User();
             String userName = faker.funnyName().name().replaceAll("[\\s|-|\\.]", "");
+            userName = String.format("%s%d", userName, i);
             u.setUsername(userName);
             u.setPassword(faker.internet().password());
             u.getRoles().add(new UserRoles(u, user));

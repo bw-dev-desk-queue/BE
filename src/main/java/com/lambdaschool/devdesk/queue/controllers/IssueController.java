@@ -1,6 +1,5 @@
 package com.lambdaschool.devdesk.queue.controllers;
 
-import com.lambdaschool.devdesk.queue.exceptions.ResourceNotFoundException;
 import com.lambdaschool.devdesk.queue.models.Issue;
 import com.lambdaschool.devdesk.queue.services.IssueServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/issues")
@@ -34,13 +34,27 @@ public class IssueController {
         return new ResponseEntity<>(issue, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/issues", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createNewIssue(@Valid @RequestBody Issue issue)
+    @GetMapping(path = "/issues/username/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getIssuesByUsernameLike(@PathVariable String name)
     {
-        issue = issueServices.save(issue);
+        List<Issue> issues = issueServices.getIssueByPartialUsername(name);
+        return new ResponseEntity<>(issues, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/issues/userid/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getLissuesByUserid(@PathVariable long id)
+    {
+        List<Issue> issues = issueServices.getIssuesByCreatedUserId(id);
+        return new ResponseEntity<>(issues, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/issues", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createNewIssue(@RequestBody @Valid Issue issue)
+    {
+        var newIssue = issueServices.save(issue);
         URI issueLocation = ServletUriComponentsBuilder.fromCurrentServletMapping()
                 .path("/issues/issue/{id}")
-                .buildAndExpand(issue.getId())
+                .buildAndExpand(newIssue.getId())
                 .toUri();
         var headers = new HttpHeaders();
         headers.setLocation(issueLocation);

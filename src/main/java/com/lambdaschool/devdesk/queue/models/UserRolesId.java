@@ -35,6 +35,15 @@ public class UserRolesId implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if(this == obj)
+        {
+            return true;
+        }
+        if(!(obj instanceof UserRolesId))
+        {
+            return false;
+        }
+        var that = (UserRolesId) obj;
+        return (user == that.user) && (role == that.role);
     }
 }

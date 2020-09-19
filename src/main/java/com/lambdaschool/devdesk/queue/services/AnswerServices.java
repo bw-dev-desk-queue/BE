@@ -7,9 +7,10 @@ import java.util.List;
 public interface AnswerServices {
     List<Answer> findAnswersByUserId(long id);
     List<Answer> findAnswersByUsernameContaining(String partialUsername);
-    Answer findAnswerById(long id);
     List<Answer> findByAnswerContaining(String partialAnswer);
     List<Answer> findByIssueId(long id);
+    List<Answer> findAll();
+    Answer findAnswerById(long id);
     Answer save(Answer answer);
     void delete(Answer answer);
     void delete(long id);
