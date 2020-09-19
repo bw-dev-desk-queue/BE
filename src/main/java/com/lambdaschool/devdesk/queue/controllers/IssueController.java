@@ -37,10 +37,6 @@ public class IssueController {
     @PostMapping(path = "/issues", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createNewIssue(@Valid @RequestBody Issue issue)
     {
-//        if(issue.getCreateduser() == null)
-//        {
-//            throw new ResourceNotFoundException(String.format("No user id found"));
-//        }
         issue = issueServices.save(issue);
         URI issueLocation = ServletUriComponentsBuilder.fromCurrentServletMapping()
                 .path("/issues/issue/{id}")

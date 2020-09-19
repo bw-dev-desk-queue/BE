@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,10 +15,8 @@ public class Issue extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(nullable = false)
-    @Valid
     private String title;
     @Column(nullable = false, columnDefinition = "TEXT")
-    @Valid
     private String description;
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
