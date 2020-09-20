@@ -25,7 +25,7 @@ public class AnswerController {
         return new ResponseEntity<>(answers, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/answers/issueid/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/issueid/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAnswersByIssueId(@PathVariable long id)
     {
         var answers = answerServices.findByIssueId(id);
