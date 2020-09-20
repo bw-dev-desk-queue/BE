@@ -14,14 +14,20 @@ public class Issue extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(nullable = false)
+    @NotNull
     private String title;
+
     @Column(nullable = false, columnDefinition = "TEXT")
+    @NotNull
     private String description;
+
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
     @JsonIgnoreProperties(value = "issues", allowSetters = true)
     private User createduser;
+
     @OneToMany(mappedBy = "issue", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = {"issue", "createduser"}, allowSetters = true)
     private Set<Answer> answers = new HashSet<>();

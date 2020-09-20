@@ -1,5 +1,6 @@
 package com.lambdaschool.devdesk.queue.services;
 
+import com.lambdaschool.devdesk.queue.exceptions.ResourceFoundException;
 import com.lambdaschool.devdesk.queue.exceptions.ResourceNotFoundException;
 import com.lambdaschool.devdesk.queue.models.Role;
 import com.lambdaschool.devdesk.queue.models.RoleMinimum;
@@ -66,6 +67,22 @@ public class RoleServicesImpl implements RoleServices {
             }
         }
         return roleRepository.save(newRole);
+    }
+
+    @Override
+    public Role save(RoleMinimum role) {
+        var toSave = new Role();
+        if(role.getName() == null)
+        {
+            throw new ResourceNotFoundException(String.format("Role name was not passed"));
+        }
+        var dataRole = roleRepository.findByNameIgnoreCase(role.getName());
+        if(dataRole != null)
+        {
+            throw new ResourceFoundException(String.format("Role with that name already created"));
+        }
+        toSave.setName(role.getName());
+        return roleRepository.save(toSave);
     }
 
     @Override

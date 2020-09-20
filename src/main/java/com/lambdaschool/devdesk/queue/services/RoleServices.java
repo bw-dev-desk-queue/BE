@@ -9,7 +9,8 @@ import java.util.List;
 public interface RoleServices {
     List<Role> getAllRoles();
     List<RoleMinimum> getAllMinRoles();
-    Role getRoleById(long id) throws ResourceNotFoundException;
-    Role save(Role role) throws ResourceNotFoundException;
-    Role findByName(String name) throws ResourceNotFoundException;
+    Role getRoleById(long id);
+    Role save(Role role);
+    Role save(RoleMinimum role);
+    Role findByName(String name);
 }

@@ -2,6 +2,7 @@ package com.lambdaschool.devdesk.queue.controllers;
 
 import com.lambdaschool.devdesk.queue.models.Issue;
 import com.lambdaschool.devdesk.queue.services.IssueServices;
+import com.lambdaschool.devdesk.queue.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,9 @@ import java.util.List;
 public class IssueController {
     @Autowired
     private IssueServices issueServices;
+
+    @Autowired
+    private UserServices userServices;
 
     @GetMapping(path = "/issues", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllIssues()
@@ -48,9 +52,11 @@ public class IssueController {
         return new ResponseEntity<>(issues, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/issues", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createNewIssue(@RequestBody @Valid Issue issue)
+    @PostMapping(path = "/issues/userid/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createNewIssue(@RequestBody @Valid Issue issue, @PathVariable long id)
     {
+        var user = userServices.getById(id);
+        issue.setCreateduser(user);
         var newIssue = issueServices.save(issue);
         URI issueLocation = ServletUriComponentsBuilder.fromCurrentServletMapping()
                 .path("/issues/issue/{id}")

@@ -1,8 +1,11 @@
 package com.lambdaschool.devdesk.queue.models;
 
 
+import javax.validation.constraints.NotNull;
+
 public class RoleMinimum {
     private long id;
+    @NotNull
     private String name;
 
     public RoleMinimum() {
