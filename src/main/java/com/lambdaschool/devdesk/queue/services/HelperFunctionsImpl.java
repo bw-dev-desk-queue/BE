@@ -1,7 +1,11 @@
 package com.lambdaschool.devdesk.queue.services;
 
+import com.lambdaschool.devdesk.queue.models.FieldErrorDetails;
 import com.lambdaschool.devdesk.queue.models.ValidationError;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.validation.ConstraintViolation;
@@ -9,10 +13,9 @@ import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service(value = "helperFunctions")
-public class HelperFunctionsImpl implements HelperFunctions{
-
-
+@Component
+public class HelperFunctionsImpl implements HelperFunctions
+{
     public List<ValidationError> getConstraintViolation(Throwable cause)
     {
         // Find any data violations that might be associated with the error and report them
@@ -40,5 +43,28 @@ public class HelperFunctionsImpl implements HelperFunctions{
             }
         }
         return listVE;
+    }
+
+    @Override
+    public FieldErrorDetails processFieldErrors(List<FieldError> fieldErrors) {
+        var error = new FieldErrorDetails(HttpStatus.BAD_REQUEST.value(), "Validation Error");
+        for(FieldError err : fieldErrors)
+        {
+            error.addFieldError(err.getField(), err.getDefaultMessage());
+        }
+        return error;
+    }
+
+    @Override
+    public List<ValidationError> fieldErrorDetailsToValidationErrors(FieldErrorDetails details) {
+        List<ValidationError> errors = new ArrayList<>();
+        for(FieldError e : details.getFieldErrors())
+        {
+            var VE = new ValidationError();
+            VE.setCode(e.getObjectName());
+            VE.setMessage(e.getField());
+            errors.add(VE);
+        }
+        return errors;
     }
 }

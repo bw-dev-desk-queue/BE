@@ -23,6 +23,10 @@ public class Issue extends Auditable {
     @NotNull
     private String description;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
+    @NotNull
+    private String whatitried;
+
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
     @JsonIgnoreProperties(value = "issues", allowSetters = true)
@@ -35,10 +39,11 @@ public class Issue extends Auditable {
     public Issue() {
     }
 
-    public Issue(String title, String description, User createduser) {
+    public Issue(String title, String description, String whatitried,User createduser) {
         this.title = title;
         this.description = description;
         this.createduser = createduser;
+        this.whatitried = whatitried;
     }
 
     public String getTitle() {
@@ -55,6 +60,14 @@ public class Issue extends Auditable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getWhatitried() {
+        return whatitried;
+    }
+
+    public void setWhatitried(String whatitried) {
+        this.whatitried = whatitried;
     }
 
     public User getCreateduser() {

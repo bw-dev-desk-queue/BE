@@ -5,8 +5,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class SwaggerWebMVC
-        implements WebMvcConfigurer
+public class SwaggerWebMVC implements WebMvcConfigurer
 {
     /**
      * Adds the Swagger web pages to Spring.
@@ -22,7 +21,7 @@ public class SwaggerWebMVC
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry)
     {
-        registry.addResourceHandler("docs.html")
+        registry.addResourceHandler("swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
 
         registry.addResourceHandler("/webjars/**")

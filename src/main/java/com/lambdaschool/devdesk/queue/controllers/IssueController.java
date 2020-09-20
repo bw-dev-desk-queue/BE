@@ -1,5 +1,6 @@
 package com.lambdaschool.devdesk.queue.controllers;
 
+import com.lambdaschool.devdesk.queue.exceptions.ResourceNotFoundException;
 import com.lambdaschool.devdesk.queue.models.Issue;
 import com.lambdaschool.devdesk.queue.services.IssueServices;
 import com.lambdaschool.devdesk.queue.services.UserServices;
@@ -38,24 +39,28 @@ public class IssueController {
         return new ResponseEntity<>(issue, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/issues/username/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/username/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getIssuesByUsernameLike(@PathVariable String name)
     {
         List<Issue> issues = issueServices.getIssueByPartialUsername(name);
         return new ResponseEntity<>(issues, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/issues/userid/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/userid/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getLissuesByUserid(@PathVariable long id)
     {
         List<Issue> issues = issueServices.getIssuesByCreatedUserId(id);
         return new ResponseEntity<>(issues, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/issues/userid/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/userid/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createNewIssue(@RequestBody @Valid Issue issue, @PathVariable long id)
     {
         var user = userServices.getById(id);
+        if(user == null)
+        {
+            throw new ResourceNotFoundException(String.format("User with id %d not found", id));
+        }
         issue.setCreateduser(user);
         var newIssue = issueServices.save(issue);
         URI issueLocation = ServletUriComponentsBuilder.fromCurrentServletMapping()

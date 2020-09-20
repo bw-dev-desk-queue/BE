@@ -75,6 +75,8 @@ public class RestExceptionHandler
                 HttpStatus.NOT_FOUND);
     }
 
+
+
     /**
      * Our custom handling of ResourceFoundExceptions. This gets thrown manually by our application.
      *
@@ -454,9 +456,9 @@ public class RestExceptionHandler
         errorDetail.setStatus(status.value());
         errorDetail.setTitle("Method Argument Not Valid");
         errorDetail.setDetail(request.getDescription(false) + " | parameter: " + ex.getParameter());
-        errorDetail.setDeveloperMessage(ex.getBindingResult()
-                .toString());
-        errorDetail.setErrors(helperFunctions.getConstraintViolation(ex));
+        errorDetail.setDeveloperMessage(ex.getClass().getName());
+        var details = helperFunctions.processFieldErrors(ex.getBindingResult().getFieldErrors());
+        errorDetail.setErrors(helperFunctions.fieldErrorDetailsToValidationErrors(details));
 
         return new ResponseEntity<>(errorDetail,
                 null,

@@ -62,6 +62,7 @@ public class SeedData implements CommandLineRunner {
                 Issue issue = new Issue();
                 issue.setTitle(faker.beer().name());
                 issue.setDescription(faker.beer().style());
+                issue.setWhatitried(faker.chuckNorris().fact());
                 issue.setCreateduser(created);
                 var savedIssue = issueServices.save(issue);
                 for(int y = 0 ; y < new Random().nextInt(2); y++)

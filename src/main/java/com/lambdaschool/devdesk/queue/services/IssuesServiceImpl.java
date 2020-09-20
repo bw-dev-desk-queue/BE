@@ -64,6 +64,7 @@ public class IssuesServiceImpl implements IssueServices{
         var user = userServices.getById(issue.getCreateduser().getId());
         i.setCreateduser(user);
         i.setDescription(issue.getDescription());
+        i.setWhatitried(issue.getWhatitried());
         i.setTitle(issue.getTitle());
         for(Answer a : issue.getAnswers())
         {
