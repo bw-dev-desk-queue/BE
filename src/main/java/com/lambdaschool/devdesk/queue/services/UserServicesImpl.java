@@ -1,13 +1,12 @@
 package com.lambdaschool.devdesk.queue.services;
 
+import com.lambdaschool.devdesk.queue.exceptions.ResourceNotFoundException;
 import com.lambdaschool.devdesk.queue.models.*;
-import com.lambdaschool.devdesk.queue.repositories.RoleRepository;
 import com.lambdaschool.devdesk.queue.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lambdaschool.devdesk.queue.exceptions.ResourceNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 

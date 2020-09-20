@@ -62,4 +62,5 @@ public class ErrorDetail {
     public void setErrors(List<ValidationError> errors) {
         this.errors = errors;
     }
+
 }

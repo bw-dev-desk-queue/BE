@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,16 +14,24 @@ public class Issue extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(nullable = false)
-    @Valid
+    @NotNull
     private String title;
+
     @Column(nullable = false, columnDefinition = "TEXT")
-    @Valid
+    @NotNull
     private String description;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    @NotNull
+    private String whatitried;
+
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
     @JsonIgnoreProperties(value = "issues", allowSetters = true)
     private User createduser;
+
     @OneToMany(mappedBy = "issue", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = {"issue", "createduser"}, allowSetters = true)
     private Set<Answer> answers = new HashSet<>();
@@ -30,10 +39,11 @@ public class Issue extends Auditable {
     public Issue() {
     }
 
-    public Issue(String title, String description, User createduser) {
+    public Issue(String title, String description, String whatitried,User createduser) {
         this.title = title;
         this.description = description;
         this.createduser = createduser;
+        this.whatitried = whatitried;
     }
 
     public String getTitle() {
@@ -50,6 +60,14 @@ public class Issue extends Auditable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getWhatitried() {
+        return whatitried;
+    }
+
+    public void setWhatitried(String whatitried) {
+        this.whatitried = whatitried;
     }
 
     public User getCreateduser() {

@@ -3,6 +3,7 @@ package com.lambdaschool.devdesk.queue.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "answers")
@@ -11,6 +12,7 @@ public class Answer extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(columnDefinition = "TEXT", nullable = false)
+    @NotNull
     private String answer;
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)

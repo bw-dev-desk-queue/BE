@@ -7,11 +7,11 @@ import com.lambdaschool.devdesk.queue.repositories.IssuesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Transactional
 @Service
 public class IssuesServiceImpl implements IssueServices{
     @Autowired
@@ -64,6 +64,7 @@ public class IssuesServiceImpl implements IssueServices{
         var user = userServices.getById(issue.getCreateduser().getId());
         i.setCreateduser(user);
         i.setDescription(issue.getDescription());
+        i.setWhatitried(issue.getWhatitried());
         i.setTitle(issue.getTitle());
         for(Answer a : issue.getAnswers())
         {

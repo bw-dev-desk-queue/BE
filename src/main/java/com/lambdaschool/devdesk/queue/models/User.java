@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,17 +15,24 @@ public class User extends Auditable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(nullable = false, unique = true)
+    @NotNull
     private String username;
+
     @Column(nullable = false)
     @JsonIgnore
+    @NotNull
     private String password;
+
     @OneToMany(mappedBy = "createduser", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties(value = "createduser")
     private Set<Issue> issues = new HashSet<>();
+
     @OneToMany(mappedBy = "createduser", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties(value = "createduser")
     private Set<Answer> answers = new HashSet<>();
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties(value = "user", allowSetters = true)
     private Set<UserRoles> roles = new HashSet<>();

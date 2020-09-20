@@ -1,6 +1,9 @@
 package com.lambdaschool.devdesk.queue.services;
 
+import com.lambdaschool.devdesk.queue.exceptions.ResourceFoundException;
+import com.lambdaschool.devdesk.queue.exceptions.ResourceNotFoundException;
 import com.lambdaschool.devdesk.queue.models.Role;
+import com.lambdaschool.devdesk.queue.models.RoleMinimum;
 import com.lambdaschool.devdesk.queue.models.User;
 import com.lambdaschool.devdesk.queue.models.UserRoles;
 import com.lambdaschool.devdesk.queue.repositories.RoleRepository;
@@ -8,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lambdaschool.devdesk.queue.exceptions.ResourceNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,20 @@ public class RoleServicesImpl implements RoleServices {
         List<Role> roles = new ArrayList<>();
         roleRepository.findAll().iterator().forEachRemaining(roles::add);
         return roles;
+    }
+
+    @Override
+    public List<RoleMinimum> getAllMinRoles() {
+        var roles = getAllRoles();
+        List<RoleMinimum> minRoles = new ArrayList<>();
+        for(Role r : roles)
+        {
+            var newMinRole = new RoleMinimum();
+            newMinRole.setId(r.getId());
+            newMinRole.setName(r.getName());
+            minRoles.add(newMinRole);
+        }
+        return minRoles;
     }
 
     @Override
@@ -51,6 +67,22 @@ public class RoleServicesImpl implements RoleServices {
             }
         }
         return roleRepository.save(newRole);
+    }
+
+    @Override
+    public Role save(RoleMinimum role) {
+        var toSave = new Role();
+        if(role.getName() == null)
+        {
+            throw new ResourceNotFoundException(String.format("Role name was not passed"));
+        }
+        var dataRole = roleRepository.findByNameIgnoreCase(role.getName());
+        if(dataRole != null)
+        {
+            throw new ResourceFoundException(String.format("Role with that name already created"));
+        }
+        toSave.setName(role.getName());
+        return roleRepository.save(toSave);
     }
 
     @Override
