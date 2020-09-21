@@ -52,6 +52,17 @@ public class UserServicesImpl implements UserServices {
             Role dataRole = roleServices.findByName(uRole.getRole().getName());
             newUser.getRoles().add(new UserRoles(newUser, dataRole));
         }
+        System.out.println(newUser.getUsername());
         return usersRepository.save(newUser);
+    }
+
+    @Override
+    public User findByName(String name) {
+        var u = usersRepository.findByUsernameIgnoreCase(name);
+        if(u == null)
+        {
+            throw new ResourceNotFoundException(String.format("Unable to find user with name %s", name));
+        }
+        return u;
     }
 }

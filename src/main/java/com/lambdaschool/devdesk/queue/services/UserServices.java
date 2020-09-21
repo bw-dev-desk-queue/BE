@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface UserServices {
     List<User> getAllUsers();
-    User getById(long id) throws ResourceNotFoundException;
-    User save(User user) throws ResourceNotFoundException;
+    User getById(long id);
+    User save(User user);
+    User findByName(String name);
 }

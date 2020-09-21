@@ -51,7 +51,7 @@ public class SeedData implements CommandLineRunner {
         for(int i = 0 ; i < 10 ; i++)
         {
             User u = new User();
-            String userName = faker.funnyName().name().replaceAll("[\\s|-|\\.]", "");
+            String userName = faker.funnyName().name().replaceAll("[\\s|-|\\.|'|\"|\\(|\\)]", "");
             userName = String.format("%s%d", userName, i);
             u.setUsername(userName);
             u.setPassword(faker.internet().password());

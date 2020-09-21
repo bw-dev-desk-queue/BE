@@ -11,4 +11,7 @@ public interface HelperFunctions {
     List<ValidationError> getConstraintViolation(Throwable cause);
     FieldErrorDetails processFieldErrors(List<FieldError> fieldErrors);
     List<ValidationError> fieldErrorDetailsToValidationErrors(FieldErrorDetails details);
+
+    boolean isAuthorizedToMakeChange(String username);
+
 }
