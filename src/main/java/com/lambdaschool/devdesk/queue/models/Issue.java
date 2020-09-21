@@ -39,7 +39,7 @@ public class Issue extends Auditable {
     public Issue() {
     }
 
-    public Issue(String title, String description, String whatitried,User createduser) {
+    public Issue(String title, String description, String whatitried, User createduser) {
         this.title = title;
         this.description = description;
         this.createduser = createduser;
