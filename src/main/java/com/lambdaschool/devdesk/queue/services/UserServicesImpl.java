@@ -52,7 +52,7 @@ public class UserServicesImpl implements UserServices {
             Role dataRole = roleServices.findByName(uRole.getRole().getName());
             newUser.getRoles().add(new UserRoles(newUser, dataRole));
         }
-        System.out.println(newUser.getUsername());
+        System.out.println(newUser.getRoles().size());
         return usersRepository.save(newUser);
     }
 

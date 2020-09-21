@@ -36,10 +36,10 @@ public class SeedData implements CommandLineRunner {
         Role user = new Role("USER");
         Role student = new Role("STUDENT");
         Role helper = new Role("HELPER");
-        roleServices.save(admin);
-        roleServices.save(user);
-        roleServices.save(student);
-        roleServices.save(helper);
+        admin = roleServices.save(admin);
+        user = roleServices.save(user);
+        student = roleServices.save(student);
+        helper = roleServices.save(helper);
         User adminUser = new User();
         adminUser.setUsername("admin");
         adminUser.setPassword("admin");
@@ -51,11 +51,21 @@ public class SeedData implements CommandLineRunner {
         for(int i = 0 ; i < 10 ; i++)
         {
             User u = new User();
-            String userName = faker.funnyName().name().replaceAll("[\\s|-|\\.|'|\"|\\(|\\)]", "");
+            String userName = faker.hobbit().character().replaceAll("[\\s|-|\\.|'|\"|\\(|\\)]", "");
             userName = String.format("%s%d", userName, i);
             u.setUsername(userName);
             u.setPassword(faker.internet().password());
             u.getRoles().add(new UserRoles(u, user));
+            u.getRoles().add(new UserRoles(u, student));
+            if(new Random().nextInt(10) > 5)
+            {
+                u.getRoles().add(new UserRoles(u, helper));
+            }
+            System.out.println(String.format("Seed data role count: %d", u.getRoles().size()));
+            for(UserRoles r : u.getRoles())
+            {
+                System.out.println(r.getRole().getName());
+            }
             var created = userServices.save(u);
             for(int x = 0 ; x < new Random().nextInt(4); x++)
             {
