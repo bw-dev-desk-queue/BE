@@ -114,7 +114,7 @@ public class SeedData implements CommandLineRunner {
                 u.getRoles().add(new UserRoles(u, helper));
             }
             var created = userServices.save(u);
-            for(int x = 0 ; x < new Random().nextInt(4); x++)
+            for(int x = 0 ; x < 4; x++)
             {
                 Issue issue = new Issue();
                 issue.setTitle(faker.beer().name());
@@ -123,7 +123,7 @@ public class SeedData implements CommandLineRunner {
                 issue.setCategory(categories[new Random().nextInt(categories.length)]);
                 issue.setCreateduser(created);
                 var savedIssue = issueServices.save(issue);
-                for(int y = 0 ; y < new Random().nextInt(2); y++)
+                for(int y = 0 ; y < 2; y++)
                 {
                     var tempUsers = userServices.getAllUsers();
                     var answer = new Answer();

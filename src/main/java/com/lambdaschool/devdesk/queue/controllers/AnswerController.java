@@ -61,4 +61,11 @@ public class AnswerController {
         headers.setLocation(issueLocation);
         return new ResponseEntity<>(null, headers, HttpStatus.CREATED);
     }
+
+    @DeleteMapping(path = "/answer/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteAnswerById(@PathVariable long id)
+    {
+        answerServices.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

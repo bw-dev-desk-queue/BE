@@ -25,6 +25,9 @@ public class AnswerServicesImpl implements AnswerServices{
     @Autowired
     IssueServices issueServices;
 
+    @Autowired
+    HelperFunctions helperFunctions;
+
     @Override
     public List<Answer> findAnswersByUserId(long id) {
         var answers = answersRepository.findByCreateduser_Id(id);
@@ -116,6 +119,7 @@ public class AnswerServicesImpl implements AnswerServices{
     @Override
     public void delete(Answer answer) {
         var toDelete = findAnswerById(answer.getId());
+        helperFunctions.isAuthorizedToMakeChange(toDelete.getCreateduser().getUsername());
         answersRepository.delete(toDelete);
     }
 
@@ -123,6 +127,7 @@ public class AnswerServicesImpl implements AnswerServices{
     @Override
     public void delete(long id) {
         var toDelete = findAnswerById(id);
+        helperFunctions.isAuthorizedToMakeChange(toDelete.getCreateduser().getUsername());
         answersRepository.delete(toDelete);
     }
 }

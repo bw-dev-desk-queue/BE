@@ -47,7 +47,7 @@ public class IssuesServiceImpl implements IssueServices{
     }
 
     @Override
-    public List<Issue> getIssueByPartialUsername(String name, boolean includeResolved) {
+    public List<Issue> getIssuesByPartialUsername(String name, boolean includeResolved) {
         List<Issue> issues;
         if(!includeResolved)
         {
@@ -86,13 +86,13 @@ public class IssuesServiceImpl implements IssueServices{
             issue = issuesRepository.findByIdAndIsresolvedFalse(id);
             if(issue == null)
             {
-                throw new ResourceNotFoundException(String.format("unable to find issues with id %d", id));
+                throw new ResourceNotFoundException(String.format("unable to find unresolved issues with id %d", id));
             }
         }
         else
         {
             issue = issuesRepository.findById(id).orElseThrow(() -> {
-                return new ResourceNotFoundException(String.format("unable to find unresolved issues with id %d", id));
+                return new ResourceNotFoundException(String.format("unable to find issues with id %d", id));
             });
 
         }
@@ -109,17 +109,9 @@ public class IssuesServiceImpl implements IssueServices{
         i.setWhatitried(issue.getWhatitried());
         i.setTitle(issue.getTitle());
         i.setCategory(issue.getCategory());
-        for(Answer a : issue.getAnswers())
+        if (issue.getAnswers() != null && issue.getAnswers().size() > 0)
         {
-            if(a.getId() > 0)
-            {
-                var dataAnswer = answerServices.findAnswerById(a.getId());
-                i.getAnswers().add(dataAnswer);
-            }
-            else
-            {
-                i.getAnswers().add(a);
-            }
+            throw new ResourceFoundException(String.format("Unable to add answers with this endpoint"));
         }
         return issuesRepository.save(i);
     }
@@ -168,8 +160,18 @@ public class IssuesServiceImpl implements IssueServices{
 
     @Transactional
     @Override
+    public void markResolved(long id, boolean isResolved) {
+        var issue = getIssueById(id, true);
+        helperFunctions.isAuthorizedToMakeChange(issue.getCreateduser().getUsername());
+        issue.setIsresolved(isResolved);
+        issuesRepository.save(issue);
+    }
+
+    @Transactional
+    @Override
     public void delete(Issue issue) {
         var dataIssue = getIssueById(issue.getId(), true);
+        helperFunctions.isAuthorizedToMakeChange(dataIssue.getCreateduser().getUsername());
         issuesRepository.delete(dataIssue);
     }
 
@@ -177,6 +179,7 @@ public class IssuesServiceImpl implements IssueServices{
     @Override
     public void delete(long id) {
         var dataIssue = getIssueById(id, true);
+        helperFunctions.isAuthorizedToMakeChange(dataIssue.getCreateduser().getUsername());
         issuesRepository.delete(dataIssue);
     }
 }
