@@ -23,9 +23,17 @@ public class Issue extends Auditable {
     @NotNull
     private String description;
 
+    @Column(nullable = false)
+    @NotNull
+    private String category;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     @NotNull
     private String whatitried;
+
+    @Column(nullable = false)
+    @NotNull
+    private boolean isresolved = false;
 
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
@@ -39,11 +47,12 @@ public class Issue extends Auditable {
     public Issue() {
     }
 
-    public Issue(String title, String description, String whatitried, User createduser) {
+    public Issue(String title, String description, String whatitried, String category, User createduser) {
         this.title = title;
         this.description = description;
         this.createduser = createduser;
         this.whatitried = whatitried;
+        this.category = category;
     }
 
     public String getTitle() {
@@ -68,6 +77,22 @@ public class Issue extends Auditable {
 
     public void setWhatitried(String whatitried) {
         this.whatitried = whatitried;
+    }
+
+    public boolean isIsresolved() {
+        return isresolved;
+    }
+
+    public void setIsresolved(boolean isresolved) {
+        this.isresolved = isresolved;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public User getCreateduser() {

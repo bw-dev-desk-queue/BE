@@ -66,6 +66,7 @@ public class IssuesServiceImpl implements IssueServices{
         i.setDescription(issue.getDescription());
         i.setWhatitried(issue.getWhatitried());
         i.setTitle(issue.getTitle());
+        i.setCategory(issue.getCategory());
         for(Answer a : issue.getAnswers())
         {
             if(a.getId() > 0)

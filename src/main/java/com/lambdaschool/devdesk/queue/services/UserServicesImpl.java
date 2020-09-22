@@ -39,21 +39,23 @@ public class UserServicesImpl implements UserServices {
         User newUser = new User();
         newUser.setPasswordNoEncrypt(user.getPassword());
         newUser.setUsername(user.getUsername().toLowerCase());
-        for(Issue i : user.getIssues())
-        {
-            newUser.getIssues().add(i);
-        }
-        for(Answer a : user.getAnswers())
-        {
-            newUser.getAnswers().add(a);
-        }
         for(UserRoles uRole : user.getRoles())
         {
             Role dataRole = roleServices.findByName(uRole.getRole().getName());
             newUser.getRoles().add(new UserRoles(newUser, dataRole));
         }
-        System.out.println(newUser.getRoles().size());
-        return usersRepository.save(newUser);
+        var temp = usersRepository.save(newUser);
+        for(Issue i : user.getIssues())
+        {
+            i.setCreateduser(temp);
+            temp.getIssues().add(i);
+        }
+        for(Answer a : user.getAnswers())
+        {
+            a.setCreateduser(temp);
+            temp.getAnswers().add(a);
+        }
+        return usersRepository.save(temp);
     }
 
     @Override
