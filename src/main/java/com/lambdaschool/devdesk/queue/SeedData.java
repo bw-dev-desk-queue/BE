@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Random;
 
 @Transactional
-@Component
+//@Component
 public class SeedData implements CommandLineRunner {
 
     @Autowired
