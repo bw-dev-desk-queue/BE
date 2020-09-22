@@ -37,7 +37,7 @@ public class Issue extends Auditable {
 
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
-    @JsonIgnoreProperties(value = "issues", allowSetters = true)
+    @JsonIgnoreProperties(value = {"issues", "answers"}, allowSetters = true)
     private User createduser;
 
     @OneToMany(mappedBy = "issue", orphanRemoval = true, cascade = CascadeType.ALL)

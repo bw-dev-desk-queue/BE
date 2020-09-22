@@ -16,7 +16,7 @@ public class Answer extends Auditable {
     private String answer;
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
-    @JsonIgnoreProperties(value = "answers", allowSetters = true)
+    @JsonIgnoreProperties(value = {"answers", "issues"}, allowSetters = true)
     private User createduser;
     @ManyToOne()
     @JoinColumn(name = "answers", nullable = false)

@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -53,14 +54,11 @@ public class IssueController {
         return new ResponseEntity<>(issues, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/userid/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createNewIssue(@RequestBody @Valid Issue issue, @PathVariable long id)
+    @PostMapping(path = "/issues", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createNewIssue(@RequestBody @Valid Issue issue)
     {
-        var user = userServices.getById(id);
-        if(user == null)
-        {
-            throw new ResourceNotFoundException(String.format("User with id %d not found", id));
-        }
+        var authName = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userServices.findByName(authName);
         issue.setCreateduser(user);
         var newIssue = issueServices.save(issue);
         URI issueLocation = ServletUriComponentsBuilder.fromCurrentServletMapping()
