@@ -1,10 +1,12 @@
 package com.lambdaschool.devdesk.queue.services;
 
+import com.lambdaschool.devdesk.queue.exceptions.ResourceFoundException;
 import com.lambdaschool.devdesk.queue.exceptions.ResourceNotFoundException;
 import com.lambdaschool.devdesk.queue.models.Answer;
 import com.lambdaschool.devdesk.queue.models.User;
 import com.lambdaschool.devdesk.queue.repositories.AnswersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,6 +92,23 @@ public class AnswerServicesImpl implements AnswerServices{
         var issue = issueServices.getIssueById(answer.getIssue().getId());
         newAnswer.setIssue(issue);
         newAnswer.setAnswer(answer.getAnswer());
+        return answersRepository.save(newAnswer);
+    }
+
+    @Transactional
+    @Override
+    public Answer save(long issueId, Answer answer) {
+        var dataIssue = issueServices.getIssueById(issueId);
+        if(dataIssue.isIsresolved())
+        {
+            throw new ResourceFoundException(String.format("issue with id %d is already marked as resolved", issueId));
+        }
+        var newAnswer = new Answer();
+        var userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userServices.findByName(userName);
+        newAnswer.setCreateduser(user);
+        newAnswer.setAnswer(answer.getAnswer());
+        newAnswer.setIssue(dataIssue);
         return answersRepository.save(newAnswer);
     }
 

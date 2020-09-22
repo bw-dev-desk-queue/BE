@@ -71,4 +71,11 @@ public class IssueController {
         headers.setLocation(issueLocation);
         return new ResponseEntity<>(null, headers, HttpStatus.CREATED);
     }
+
+    @PutMapping(path = "/issue/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateIssueById(@PathVariable long id, @RequestBody Issue issue)
+    {
+        var updated = issueServices.update(id, issue);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
 }

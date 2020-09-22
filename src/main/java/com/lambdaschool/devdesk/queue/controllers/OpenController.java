@@ -1,5 +1,8 @@
 package com.lambdaschool.devdesk.queue.controllers;
 
+import com.lambdaschool.devdesk.queue.exceptions.ResourceFoundException;
+import com.lambdaschool.devdesk.queue.exceptions.ResourceNotFoundException;
+import com.lambdaschool.devdesk.queue.models.Role;
 import com.lambdaschool.devdesk.queue.models.User;
 import com.lambdaschool.devdesk.queue.models.UserMinimum;
 import com.lambdaschool.devdesk.queue.models.UserRoles;
@@ -60,8 +63,33 @@ public class OpenController
             throws
             URISyntaxException
     {
+        // Test to see if the username already exists in the database
+        {
+            User testuser = null;
+            try{
+                testuser = userService.findByName(newminuser.getUsername());
+            }
+            catch(ResourceNotFoundException ex)
+            {
+
+            }
+            finally {
+                if(testuser != null)
+                {
+                    throw new ResourceFoundException("That username already exists");
+                }
+            }
+        }
         // Create the user
         User newuser = new User();
+        List<Role> roles = new ArrayList<>();
+        System.out.println(newminuser.getRoles());
+        for(String r : newminuser.getRoles())
+        {
+            var role = roleService.findByName(r);
+            roles.add(role);
+        }
+
 
         newuser.setUsername(newminuser.getUsername());
         newuser.setPassword(newminuser.getPassword());
@@ -70,6 +98,10 @@ public class OpenController
         Set<UserRoles> newRoles = new HashSet<>();
         newRoles.add(new UserRoles(newuser,
                 roleService.findByName("user")));
+        for(Role r : roles)
+        {
+            newRoles.add(new UserRoles(newuser, r));
+        }
         newuser.setRoles(newRoles);
 
         newuser = userService.save(newuser);
@@ -90,8 +122,8 @@ public class OpenController
         List<MediaType> acceptableMediaTypes = new ArrayList<>();
         acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
 
-        String clientId = (System.getenv("CLIENTID") == null ? "ID" : System.getenv("CLIENTID"));
-        String clientSecret = (System.getenv("CLIENTSECRET") == null ? "SECRET" : System.getenv("CLIENTSECRET"));
+        String clientId = (System.getenv("CLIENTID") == null ? "devdeskqueue" : System.getenv("CLIENTID"));
+        String clientSecret = (System.getenv("CLIENTSECRET") == null ? "dudewheresmycarwheresyourcardude" : System.getenv("CLIENTSECRET"));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

@@ -1,5 +1,6 @@
 package com.lambdaschool.devdesk.queue.services;
 
+import com.lambdaschool.devdesk.queue.exceptions.ResourceFoundException;
 import com.lambdaschool.devdesk.queue.exceptions.ResourceNotFoundException;
 import com.lambdaschool.devdesk.queue.models.Answer;
 import com.lambdaschool.devdesk.queue.models.Issue;
@@ -80,6 +81,41 @@ public class IssuesServiceImpl implements IssueServices{
             }
         }
         return issuesRepository.save(i);
+    }
+
+    @Transactional
+    @Override
+    public Issue update(long id, Issue issue) {
+        var dataIssue = getIssueById(id);
+        if(dataIssue.isIsresolved())
+        {
+            throw new ResourceFoundException("Unable to update a resolved issue");
+        }
+        if(issue.getAnswers().size() > 0)
+        {
+            throw new ResourceFoundException("Unable to modify answers via this endpoint");
+        }
+        if(issue.getCategory() != null)
+        {
+            dataIssue.setCategory(issue.getCategory());
+        }
+        if(issue.getDescription() != null)
+        {
+            dataIssue.setDescription(issue.getDescription());
+        }
+        if(issue.getTitle() != null)
+        {
+            dataIssue.setTitle(issue.getTitle());
+        }
+        if(issue.getWhatitried() != null)
+        {
+            dataIssue.setWhatitried(issue.getWhatitried());
+        }
+        if(issue.getCreateduser() != null)
+        {
+            throw new ResourceFoundException("Unable to modify users via this endpoint");
+        }
+        return issuesRepository.save(dataIssue);
     }
 
     @Transactional

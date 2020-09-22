@@ -15,9 +15,9 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 public class AuthorizationServerConfig
         extends AuthorizationServerConfigurerAdapter
 {
-    static final String CLIENT_ID = (System.getenv("CLIENTID") == null ? "ID" : System.getenv("CLIENTID"));
+    static final String CLIENT_ID = (System.getenv("CLIENTID") == null ? "devdeskqueue" : System.getenv("CLIENTID"));
 
-    static final String CLIENT_SECRET = (System.getenv("CLIENTSECRET") == null ? "SECRET" : System.getenv("CLIENTSECRET")); // read from environment variable
+    static final String CLIENT_SECRET = (System.getenv("CLIENTSECRET") == null ? "dudewheresmycarwheresyourcardude" : System.getenv("CLIENTSECRET")); // read from environment variable
 
     static final String GRANT_TYPE_PASSWORD = "password";
 

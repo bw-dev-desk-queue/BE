@@ -3,10 +3,12 @@ package com.lambdaschool.devdesk.queue.models;
 public class UserMinimum {
     private String username;
     private String password;
+    private String[] roles;
 
-    public UserMinimum(String username, String password) {
+    public UserMinimum(String username, String password, String[] roles) {
         this.username = username;
         this.password = password;
+        this.roles = roles;
     }
 
     public UserMinimum() {
@@ -26,5 +28,13 @@ public class UserMinimum {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String[] getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String[] roles) {
+        this.roles = roles;
     }
 }
