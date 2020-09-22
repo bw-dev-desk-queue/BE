@@ -89,7 +89,7 @@ public class AnswerServicesImpl implements AnswerServices{
         Answer newAnswer = new Answer();
         User created = userServices.getById(answer.getCreateduser().getId());
         newAnswer.setCreateduser(created);
-        var issue = issueServices.getIssueById(answer.getIssue().getId());
+        var issue = issueServices.getIssueById(answer.getIssue().getId(), false);
         newAnswer.setIssue(issue);
         newAnswer.setAnswer(answer.getAnswer());
         return answersRepository.save(newAnswer);
@@ -98,7 +98,7 @@ public class AnswerServicesImpl implements AnswerServices{
     @Transactional
     @Override
     public Answer save(long issueId, Answer answer) {
-        var dataIssue = issueServices.getIssueById(issueId);
+        var dataIssue = issueServices.getIssueById(issueId, false);
         if(dataIssue.isIsresolved())
         {
             throw new ResourceFoundException(String.format("issue with id %d is already marked as resolved", issueId));

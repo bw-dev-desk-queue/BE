@@ -69,6 +69,7 @@ public class RoleServicesImpl implements RoleServices {
         return roleRepository.save(newRole);
     }
 
+    @Transactional
     @Override
     public Role save(RoleMinimum role) {
         var toSave = new Role();

@@ -67,4 +67,14 @@ public class UserServicesImpl implements UserServices {
         }
         return u;
     }
+
+    @Override
+    public List<User> findByNameLike(String name) {
+        var users = usersRepository.findByUsernameContainingIgnoreCase(name);
+        if(users == null || users.size() == 0)
+        {
+            throw new ResourceNotFoundException(String.format("unable to find users with name containing %s", name));
+        }
+        return users;
+    }
 }

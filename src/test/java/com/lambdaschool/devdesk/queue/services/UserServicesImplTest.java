@@ -42,19 +42,19 @@ public class UserServicesImplTest {
     }
 
     @Test
-    public void getAllUsers() {
-        assertEquals(11, userServices.getAllUsers().size());
+    public void a_getAllUsers() {
+        assertEquals(14, userServices.getAllUsers().size());
     }
 
     @Test
-    public void getById() throws ResourceNotFoundException {
+    public void b_getById() throws ResourceNotFoundException {
         var users = userServices.getAllUsers();
         var userToTest = users.get(new Random().nextInt(users.size()));
         assertEquals(userToTest.getUsername(), userServices.getById(userToTest.getId()).getUsername());
     }
 
     @Test
-    public void save() throws ResourceNotFoundException {
+    public void c_save() throws ResourceNotFoundException {
         var roles = roleServices.getAllRoles();
         User u = new User();
         u.setPassword("test");
@@ -66,5 +66,34 @@ public class UserServicesImplTest {
         User saved = userServices.save(u);
         assertTrue(saved.getId() > 0);
         assertEquals(saved.getUsername(), u.getUsername().toLowerCase());
+    }
+
+    @Test
+    public void d_findByName()
+    {
+        var toFind = "joedeertay";
+        var u = userServices.findByName(toFind);
+        assertEquals(u.getUsername(), "joedeertay");
+    }
+
+    @Test
+    public void e_findByNameLike()
+    {
+        var users = userServices.findByNameLike("joedeer");
+        assertEquals(users.size(), 1);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void f_findByNameNotFound()
+    {
+        var user = userServices.findByName("zztopisdabomb");
+        assertEquals(user.getUsername(), "");
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void g_findByNameLikeNotFound()
+    {
+        var users = userServices.findByNameLike("zztopisdabomb");
+        assertEquals(users, null);
     }
 }

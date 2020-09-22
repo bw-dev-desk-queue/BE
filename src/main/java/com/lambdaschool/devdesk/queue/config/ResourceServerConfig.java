@@ -49,6 +49,8 @@ public class ResourceServerConfig
                         "/webjars/**",
                         "/createnewuser")
                 .permitAll()
+                .antMatchers("/issues/**", "/answers/**", "/users/**", "/roles/**")
+                .authenticated()
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(new OAuth2AccessDeniedHandler());
