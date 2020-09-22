@@ -76,7 +76,7 @@ public class SeedData implements CommandLineRunner {
         // Add a hard coded Helper
         {
             var newUser = new User();
-            newUser.setUsername("TestStudentHelper");
+            newUser.setUsername("TestHelper");
             newUser.setPassword("test123");
             newUser.getRoles().add(new UserRoles(newUser, helper));
             newUser.getRoles().add(new UserRoles(newUser, user));
