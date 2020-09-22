@@ -9,6 +9,7 @@ public interface IssueServices {
     List<Issue> getIssueByPartialUsername(String name);
     List<Issue> getIssuesByCreatedUserId(long id);
     Issue getIssueById(long id);
+    Issue update(long id, Issue issue);
     Issue save(Issue issue);
     void delete(Issue issue);
     void delete(long id);

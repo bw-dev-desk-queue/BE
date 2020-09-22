@@ -4,9 +4,6 @@ import com.lambdaschool.devdesk.queue.exceptions.ResourceNotFoundException;
 import com.lambdaschool.devdesk.queue.models.Issue;
 import com.lambdaschool.devdesk.queue.services.IssueServices;
 import com.lambdaschool.devdesk.queue.services.UserServices;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ExampleProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -73,5 +70,12 @@ public class IssueController {
         var headers = new HttpHeaders();
         headers.setLocation(issueLocation);
         return new ResponseEntity<>(null, headers, HttpStatus.CREATED);
+    }
+
+    @PutMapping(path = "/issue/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateIssueById(@PathVariable long id, @RequestBody Issue issue)
+    {
+        var updated = issueServices.update(id, issue);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 }

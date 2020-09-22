@@ -12,6 +12,7 @@ public interface AnswerServices {
     List<Answer> findAll();
     Answer findAnswerById(long id);
     Answer save(Answer answer);
+    Answer save(long issueId, Answer answer);
     void delete(Answer answer);
     void delete(long id);
 }
