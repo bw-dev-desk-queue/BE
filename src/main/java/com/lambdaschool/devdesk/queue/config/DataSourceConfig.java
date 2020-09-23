@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfig
 {
-    @Value("${local.run.db:h2}")
+    @Value("${local.db.run:h2}")
     private String dbValue;
 
     @Value("${spring.datasource.url:}")

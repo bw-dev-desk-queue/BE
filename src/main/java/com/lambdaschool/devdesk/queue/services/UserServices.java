@@ -10,4 +10,6 @@ public interface UserServices {
     User getById(long id);
     User save(User user);
     User findByName(String name);
+    List<User> findByNameLike(String name);
+    void deleteUserById(long id);
 }

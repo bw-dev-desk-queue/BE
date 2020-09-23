@@ -10,4 +10,7 @@ import java.util.List;
 public interface IssuesRepository extends CrudRepository<Issue, Long> {
     List<Issue> findByCreateduser_IdOrderByTitleDesc(long id);
     List<Issue> findAllByCreateduser_UsernameContainingIgnoreCaseOrderByCreateduserDesc(String partialName);
+    List<Issue> findAllByCreateduser_UsernameContainingIgnoreCaseAndIsresolvedFalseOrderByCreateduserDesc(String partialName);
+    List<Issue> findAllByIsresolvedFalse();
+    Issue findByIdAndIsresolvedFalse(long id);
 }

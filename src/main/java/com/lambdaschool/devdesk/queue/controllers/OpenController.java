@@ -109,7 +109,7 @@ public class OpenController
         // set the location header for the newly created resource
         // The location comes from a different controller!
         HttpHeaders responseHeaders = new HttpHeaders();
-        URI newUserURI = ServletUriComponentsBuilder.fromUriString(httpServletRequest.getServerName() + ":" + httpServletRequest.getLocalPort() + "/users/user/{userId}")
+        URI newUserURI = ServletUriComponentsBuilder.fromUriString("localhost" + ":" + httpServletRequest.getLocalPort() + "/users/user/{id}")
                 .buildAndExpand(newuser.getId())
                 .toUri();
         responseHeaders.setLocation(newUserURI);
@@ -117,13 +117,13 @@ public class OpenController
         // return the access token
         // To get the access token, surf to the endpoint /login just as if a client had done this.
         RestTemplate restTemplate = new RestTemplate();
-        String requestURI = "http://" + httpServletRequest.getServerName() + ":" + httpServletRequest.getLocalPort() + "/login";
+        String requestURI = "http://" + "localhost" + ":" + httpServletRequest.getLocalPort() + "/login";
 
         List<MediaType> acceptableMediaTypes = new ArrayList<>();
         acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
 
-        String clientId = (System.getenv("CLIENTID") == null ? "devdeskqueue" : System.getenv("CLIENTID"));
-        String clientSecret = (System.getenv("CLIENTSECRET") == null ? "dudewheresmycarwheresyourcardude" : System.getenv("CLIENTSECRET"));
+        String clientId = (System.getenv("CLIENTID") == null ? "client" : System.getenv("CLIENTID"));
+        String clientSecret = (System.getenv("CLIENTSECRET") == null ? "secret" : System.getenv("CLIENTSECRET"));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

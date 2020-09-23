@@ -69,6 +69,12 @@ public class RoleServicesImplTest {
     }
 
     @Test
+    public void ca_saveMin()
+    {
+
+    }
+
+    @Test
     public void d_saveWithUsers() throws ResourceNotFoundException
     {
         Role newRole = new Role();
