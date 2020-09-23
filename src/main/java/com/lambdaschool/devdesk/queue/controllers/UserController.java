@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,6 +24,9 @@ public class UserController {
 
     @Autowired
     private HelperFunctions helperFunctions;
+
+    @Autowired
+    private TokenStore tokenStore;
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -45,5 +49,12 @@ public class UserController {
     {
         User u = userServices.getById(id);
         return new ResponseEntity<>(u, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteUserById(@PathVariable long id)
+    {
+        userServices.deleteUserById(id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

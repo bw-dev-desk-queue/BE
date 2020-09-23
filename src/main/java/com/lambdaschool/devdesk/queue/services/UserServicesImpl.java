@@ -19,6 +19,9 @@ public class UserServicesImpl implements UserServices {
     @Autowired
     RoleServices roleServices;
 
+    @Autowired
+    HelperFunctions helperFunctions;
+
     @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -76,5 +79,13 @@ public class UserServicesImpl implements UserServices {
             throw new ResourceNotFoundException(String.format("unable to find users with name containing %s", name));
         }
         return users;
+    }
+
+    @Transactional
+    @Override
+    public void deleteUserById(long id) {
+        var user = getById(id);
+        helperFunctions.isAuthorizedToMakeChange(user.getUsername());
+        usersRepository.delete(user);
     }
 }
